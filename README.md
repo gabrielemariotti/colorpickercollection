@@ -2,6 +2,9 @@
 
 This repository provides a simple collection of Color Picker.
 
+* [x] Color Picker from Stock Calendar
+* [x] Color Picker from Dashclock
+
 ---
 
 ## Color Picker from Stock Calendar
