@@ -18,12 +18,26 @@ You can find source code in :
 ### Usage
 
 You can find an example in `MainActivity`:
+It uses original code.
 ``` java
 
   ColorPickerDialog colorcalendar = ColorPickerDialog.newInstance(
               R.string.color_picker_default_title, 
-              mColor, 0, 5,
+              mColor,
+              mSelectedColorCal0,
+              5,
               Utils.isTablet(this)? ColorPickerDialog.SIZE_LARGE : ColorPickerDialog.SIZE_SMALL);
+              
+  //Implement listener to get selected color value
+  colorcalendar.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener(){
+
+				@Override
+				public void onColorSelected(int color) {
+					mSelectedColorCal0=color;
+				}
+				
+	});
+	
   colorcalendar.show(getFragmentManager(),"cal");
 ```
 
@@ -39,14 +53,31 @@ You can find source code in:
 
 ### Usage
 
-You can find an example in `MainActivity`:
+You can find an example of original `PreferenceColor` in `dashclockpicker.dashclockSettingsActivity`.
+
+You can find an example of Custom ColorDialogPicker in `MainActivity`:
 ``` java
 
-  ColorDialogFragmentSA colordashfragment = ColorDialogFragmentSA.newInstance();
+  ColorPickerDialogDash colordashfragment = ColorPickerDialogDash.newInstance(
+              R.string.color_picker_default_title,
+              mColor,
+              mSelectedColorDash1,
+              5);
+  
+  //Implement listener to get color value
+  colordashfragment.setOnColorSelectedListener(new ColorPickerDialogDash.OnColorSelectedListener(){
+
+				@Override
+				public void onColorSelected(int color) {
+					mSelectedColorDash1=color;	
+				}
+				
+	});        
+	
   colordashfragment.show(getFragmentManager(), "dash");
 
 ```
 
-You can find also, an example of `PreferenceColor` in `dashclockpicker.dashclockSettingsActivity`
+
 
 ![DashPicker](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/dash_prefs.png)
