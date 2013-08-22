@@ -75,3 +75,61 @@ You can find an example of Custom **ColorDialogPicker** in `MainActivity`:
 ```
 
 ![DashPicker](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/dash_prefs.png)
+
+You can find `Utils.ColorUtils` some useful methods to manage colors.
+
+To create an array of color you can use:
+``` java
+  Utils.ColorUtils.colorChoice(Context context)
+```
+
+It uses this array in dash_colors.xml.
+You can easily change this list.
+``` xml
+ <string-array name="default_color_choice_values" translatable="false">
+        <item>#33b5e5</item>
+        <item>#aa66cc</item>
+        <item>#99cc00</item>
+        <item>#ffbb33</item>
+        <item>#ff4444</item>
+        <item>#0099cc</item>
+        <item>#9933cc</item>
+        <item>#669900</item>
+        <item>#ff8800</item>
+        <item>#cc0000</item>
+        <item>#ffffff</item>
+        <item>#eeeeee</item>
+        <item>#cccccc</item>
+        <item>#888888</item>
+    </string-array>
+```
+
+### Files
+src/dashclockpicker/*<br/>
+res/layout/dash_*.xml<br/>
+res/values/dash_*.xml<br/>
+res/xml/pref_dash*.xml<br/>
+
+Credits
+-------
+
+Author: Gabriele Mariotti (gabri.mariotti@gmail.com)
+
+License
+-------
+
+    Copyright 2013 Gabriele Mariotti
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+    
+
