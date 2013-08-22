@@ -8,5 +8,10 @@
     <string name="pref_config">Color Picker</string>
     <string name="title_activity_settings">Setting</string>
     
+    <string name="ns_menu_main_header_dash">Dashclock</string>
+    <string name="ns_menu_main_row_dash_original">Original ColorPreference</string>
+    <string name="ns_menu_main_row_dash_dialog">Custom ColorPickerDialog</string>
+    <string name="ns_menu_main_header_calendar">Stock Calendar</string>
+    <string name="ns_menu_main_row_calendar_original">Original ColorPicker</string>
     
 </resources>
