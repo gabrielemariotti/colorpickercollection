@@ -25,22 +25,23 @@ package it.gmariotti.android.example.colorpicker.internal;
 public class NsMenuItemModel {
 
 	public int title;
-	public int iconRes;
+	//public int iconRes;
 	public int _id;
+	public int colorSquare;
 	//public int counter;
 	public boolean isHeader;
 
-	public NsMenuItemModel(int title, int iconRes,boolean header, int id) {
+	public NsMenuItemModel(int title, int colorSquare,boolean header, int id) {
 		this.title = title;
-		this.iconRes = iconRes;
+		this.colorSquare=colorSquare;
 		this.isHeader=header;
 		this._id=id;
 		//this.counter=counter;
 	}
 	
 		
-	public NsMenuItemModel(int title, int iconRes,int id) {
-		this(title,iconRes,false,id);
+	public NsMenuItemModel(int title, int colorSquare,int id) {
+		this(title,colorSquare,false,id);
 	}
 	
 	

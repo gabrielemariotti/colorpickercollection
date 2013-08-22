@@ -23,7 +23,7 @@
         
         
          <it.gmariotti.android.example.colorpicker.dashclockpicker.ColorPreference
-            android:key="preference_key"
+            android:key="dash_colorkey"
             android:title="Preference Title"
             android:summary="Preference summary"
             android:defaultValue="@android:color/white"

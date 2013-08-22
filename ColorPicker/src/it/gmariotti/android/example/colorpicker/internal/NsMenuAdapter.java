@@ -18,6 +18,7 @@ package it.gmariotti.android.example.colorpicker.internal;
 
 import it.gmariotti.android.example.colorpicker.R;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,11 +73,13 @@ public class NsMenuAdapter extends ArrayAdapter<NsMenuItemModel> {
 	
 	public static class ViewHolder {
 		public final TextView textHolder;
-		public final ImageView imageHolder;
+		//public final ImageView imageHolder;
+		public final CalendarColorSquare squareHolder;
 
-		public ViewHolder(TextView text1, ImageView image1) {
+		public ViewHolder(TextView text1, CalendarColorSquare squareHolder) {
 			this.textHolder = text1;
-			this.imageHolder = image1;
+			//this.imageHolder = image1;
+			this.squareHolder=squareHolder;
 		}
 	}
 
@@ -144,8 +147,9 @@ public class NsMenuAdapter extends ArrayAdapter<NsMenuItemModel> {
 	            		view = LayoutInflater.from(getContext()).inflate(layout, null);
 	            		
 	            		TextView text1 = (TextView) view.findViewById(R.id.menurow_title);
-	            		ImageView imageView = (ImageView) view.findViewById(R.id.menurow_icon);
-	            		viewHolder = new ViewHolder(text1, imageView);
+	            		//ImageView imageView = (ImageView) view.findViewById(R.id.menurow_icon);
+	            		CalendarColorSquare square1 = (CalendarColorSquare) view.findViewById(R.id.menurow_square);
+	            		viewHolder = new ViewHolder(text1, square1);
 	            		view.setTag(viewHolder);
 	            		
 	            	}
@@ -155,12 +159,13 @@ public class NsMenuAdapter extends ArrayAdapter<NsMenuItemModel> {
 	            		if (viewHolder.textHolder != null)
 	            			viewHolder.textHolder.setText(item.title);
 	            		
-	            		if (viewHolder.imageHolder != null) {
-	        				if (item.iconRes > 0) {
-	        					viewHolder.imageHolder.setVisibility(View.VISIBLE);
-	        					viewHolder.imageHolder.setImageResource(item.iconRes);
+	            		if (viewHolder.squareHolder != null) {
+	        				if (item.colorSquare != 0) {
+	        					//viewHolder.squareHolder.setVisibility(View.VISIBLE);
+	        					viewHolder.squareHolder.setBackgroundColor(item.colorSquare);
 	        				} else {
-	        					viewHolder.imageHolder.setVisibility(View.GONE);
+	        					//viewHolder.imageHolder.setVisibility(View.GONE);
+	        					viewHolder.squareHolder.setBackgroundColor(Color.parseColor("#FFFFFF"));
 	        				}
 	        			}
 	            	}	
