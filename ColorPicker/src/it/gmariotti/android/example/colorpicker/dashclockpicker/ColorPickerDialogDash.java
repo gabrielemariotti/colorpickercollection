@@ -20,6 +20,7 @@
 package it.gmariotti.android.example.colorpicker.dashclockpicker;
 
 import it.gmariotti.android.example.colorpicker.R;
+import it.gmariotti.android.example.colorpicker.calendarstock.ColorPickerSwatch.OnColorSelectedListener;
 
 
 import java.util.ArrayList;
@@ -45,7 +46,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class ColorDialogFragmentSA extends DialogFragment {
+/**
+ * ColorDialog extracted from {@link ColorPreference}.
+ * It can be used as DialogFragment.
+ * 
+ * 
+ * 
+ * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
+ *
+ */
+public class ColorPickerDialogDash extends DialogFragment {
 	
     private ColorGridAdapter mAdapter;
     private GridView mColorGrid;
@@ -53,14 +63,70 @@ public class ColorDialogFragmentSA extends DialogFragment {
     private int mValue = 0;
     private int mItemLayoutId = R.layout.dash_grid_item_color;
     private int mNumColumns = 5;
-
-    public ColorDialogFragmentSA() {
+    
+    //---------------------------------------------------------------------------------------------------
+    //Added
+    //---------------------------------------------------------------------------------------------------
+    protected int mSelectedColor; 
+    protected int mTitleResId = R.string.color_picker_default_title;
+    protected OnColorSelectedListener mListener;
+    
+    
+    public ColorPickerDialogDash() {
     }
 
-    public static ColorDialogFragmentSA newInstance() {
-        return new ColorDialogFragmentSA();
+    public static ColorPickerDialogDash newInstance() {
+        return new ColorPickerDialogDash();
     }
 
+    //---------------------------------------------------------------------------------------------------
+    // Added 
+    //---------------------------------------------------------------------------------------------------
+    
+    /**
+     * Constructor 
+     * 
+     * @param titleResId       title resource id
+     * @param colors           array of colors
+     * @param selectedColor    selected color
+     * @param columns          number of columns
+     * @return                 new ColorPickerDialog
+     */
+    public static ColorPickerDialogDash newInstance(int titleResId,int[] colors, int selectedColor,int columns) {
+    	ColorPickerDialogDash colorPicker = ColorPickerDialogDash.newInstance();
+    	colorPicker.initialize(titleResId, colors, selectedColor, columns);
+    	return colorPicker;
+    }
+    
+    
+    /**
+     * Interface for a callback when a color square is selected.
+     */
+    public interface OnColorSelectedListener {
+
+        /**
+         * Called when a specific color square has been selected.
+         */
+        public void onColorSelected(int color);
+    }
+    
+    
+    public void setOnColorSelectedListener(OnColorSelectedListener listener) {
+            mListener = listener;
+    }
+    
+    
+    public void initialize(int titleResId, int[] colors, int selectedColor, int columns) {
+    	mColorChoices= colors;
+    	mNumColumns = columns;
+    	mSelectedColor= selectedColor;
+    	if (titleResId>0)
+    		mTitleResId=titleResId;
+    }
+    
+    
+    //---------------------------------------------------------------------------------------------------
+    
     public void setPreference() {
         tryBindLists();
     }
@@ -68,22 +134,7 @@ public class ColorDialogFragmentSA extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        initValues();
         tryBindLists();
-    }
-    
-    //Added
-    private void initValues(){
-    	
-    	String[] color_array = getResources().getStringArray(R.array.default_color_choice_values);
-    	
-        if (color_array!=null && color_array.length>0) {
-            mColorChoices = new int[color_array.length];
-            for (int i = 0; i < color_array.length; i++) {
-                mColorChoices[i] = Color.parseColor(color_array[i]);
-            }
-        }
-
     }
 
     @Override
@@ -99,7 +150,10 @@ public class ColorDialogFragmentSA extends DialogFragment {
             @Override
             public void onItemClick(AdapterView<?> listView, View view,
                     int position, long itemId) {
-            			Toast.makeText(getActivity(), "Selected color="+mAdapter.getItem(position), Toast.LENGTH_LONG).show();
+            	    //Added
+            		//Toast.makeText(getActivity(), "Selected color="+mAdapter.getItem(position), Toast.LENGTH_LONG).show();
+            		if (mListener!=null)
+            			mListener.onColorSelected(mAdapter.getItem(position));
             		dismiss();
             }
         });
@@ -108,6 +162,7 @@ public class ColorDialogFragmentSA extends DialogFragment {
 
         return new AlertDialog.Builder(getActivity())
                 .setView(rootView)
+                .setTitle(mTitleResId) //Added
                 .create();
     }
 
@@ -118,7 +173,7 @@ public class ColorDialogFragmentSA extends DialogFragment {
         }
 
         if (mAdapter != null && mColorGrid != null) {
-             mAdapter.setSelectedColor(mAdapter.getItem(2));  //USE This to select color
+             mAdapter.setSelectedColor(mSelectedColor);  //USE this to select color
             mColorGrid.setAdapter(mAdapter);
         }
     }
@@ -164,8 +219,11 @@ public class ColorDialogFragmentSA extends DialogFragment {
         }
 
         public void setSelectedColor(int selectedColor) {
-            mSelectedColor = selectedColor;
-            notifyDataSetChanged();
+        	
+        	if (mSelectedColor != selectedColor) {
+        		mSelectedColor = selectedColor;
+        		notifyDataSetChanged();
+        	}
         }
     }
 
