@@ -17,6 +17,7 @@ package it.gmariotti.android.example.colorpicker.internal;
 
 
 import it.gmariotti.android.example.colorpicker.R;
+import it.gmariotti.android.example.colorpicker.Utils;
 import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -165,7 +166,7 @@ public class NsMenuAdapter extends ArrayAdapter<NsMenuItemModel> {
 	        					viewHolder.squareHolder.setBackgroundColor(item.colorSquare);
 	        				} else {
 	        					//viewHolder.imageHolder.setVisibility(View.GONE);
-	        					viewHolder.squareHolder.setBackgroundColor(Color.parseColor("#FFFFFF"));
+	        					viewHolder.squareHolder.setBackgroundColor(Utils.ColorUtils.parseWhiteColor());
 	        				}
 	        			}
 	            	}	

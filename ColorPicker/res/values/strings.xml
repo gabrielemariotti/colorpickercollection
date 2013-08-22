@@ -2,7 +2,7 @@
 <resources>
 
     <!--  App name -->
-    <string name="app_name">ColorPickerCollection</string>
+    <string name="app_name">Color Picker Collection</string>
     
     <!-- Prefs Dash-->
     <string name="pref_config">Color Picker</string>

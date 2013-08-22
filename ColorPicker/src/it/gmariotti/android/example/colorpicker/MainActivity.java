@@ -30,7 +30,11 @@ import android.view.View;
 import android.widget.ListView;
 
 /**
+ * This activity contains these examples:
  * 
+ * DialogColorPicker by StockCalendar
+ * ColorPreference by DashClock
+ * DialogColorPickerDash extracted from Dashclock 
  * 
  * 
  * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
@@ -96,14 +100,16 @@ public class MainActivity extends ListActivity{
 		if (item==null) return;
 		Intent intent = null;
 		//Init colors to use in dialogs
-		int[] mColor= Utils.colorChoice(this);
+		int[] mColor= Utils.ColorUtils.colorChoice(this);
 		
 		switch (item._id) {
 		default:
+		//-------------------------------------------------------------------------------------------------------------
 		case MENU_DASH_0:
 			//Original ColorPreference
 			intent = new Intent(this, SettingsActivity.class);
 			break;
+		//-------------------------------------------------------------------------------------------------------------	
 		case MENU_DASH_1:
 			//Custom Dialog extracted from ColorPreference
 			ColorPickerDialogDash colordashfragment = ColorPickerDialogDash.newInstance(R.string.color_picker_default_title,mColor,mSelectedColorDash1,5);
@@ -121,7 +127,7 @@ public class MainActivity extends ListActivity{
 			});
 			colordashfragment.show(getFragmentManager(), "dash");
 			break;
-		
+		//-------------------------------------------------------------------------------------------------------------
 		case MENU_CALENDAR_0:
 			//Original Stock Calendar
 			ColorPickerDialog colorcalendar = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
@@ -140,7 +146,7 @@ public class MainActivity extends ListActivity{
 			});
 			colorcalendar.show(getFragmentManager(),"cal");
 			break;
-			
+		//-------------------------------------------------------------------------------------------------------------	
 		}
 
 		if (intent != null)
@@ -161,6 +167,10 @@ public class MainActivity extends ListActivity{
 			mSelectedColorDash0= shared.getInt("dash_colorkey", 0);
 		}
 		
+		//-------------------------------------------------------------------------------------
+		// Dashclock
+		//-------------------------------------------------------------------------------------
+
 		// Add Header
 		mAdapter.addHeader(R.string.ns_menu_main_header_dash);
 		// Add Dashclock items
@@ -169,10 +179,15 @@ public class MainActivity extends ListActivity{
 		mAdapter.addItem(mItem1);
 		mAdapter.addItem(mItem2);
 		
+		//-------------------------------------------------------------------------------------
+		// Stock Calendar
+		//-------------------------------------------------------------------------------------
+
 		// Add Header
 		mAdapter.addHeader(R.string.ns_menu_main_header_calendar);
 		NsMenuItemModel mItem1c = new NsMenuItemModel(R.string.ns_menu_main_row_calendar_original, mSelectedColorCal0, MENU_CALENDAR_0);
 		mAdapter.addItem(mItem1c);
+		
 		
 		setListAdapter(mAdapter);
 		getListView().setDividerHeight(0);

@@ -115,7 +115,14 @@ public class ColorPickerDialogDash extends DialogFragment {
             mListener = listener;
     }
     
-    
+    /**
+     * Initialize the dialog picker
+     * 
+     * @param titleResId       title resource id
+     * @param colors           array of colors
+     * @param selectedColor    selected color
+     * @param columns          number of columns
+     */
     public void initialize(int titleResId, int[] colors, int selectedColor, int columns) {
     	mColorChoices= colors;
     	mNumColumns = columns;
