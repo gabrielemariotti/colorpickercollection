@@ -71,6 +71,13 @@ public class ColorPickerDialogDash extends DialogFragment {
     protected int mTitleResId = R.string.color_picker_default_title;
     protected OnColorSelectedListener mListener;
     
+    //Bundle
+    protected static final String KEY_TITLE_ID = "title_id";
+    protected static final String KEY_COLORS = "colors";
+    protected static final String KEY_SELECTED_COLOR = "selected_color";
+    protected static final String KEY_COLUMNS = "columns";
+    
+    
     
     public ColorPickerDialogDash() {
     }
@@ -98,6 +105,12 @@ public class ColorPickerDialogDash extends DialogFragment {
     	return colorPicker;
     }
     
+    public void setArguments(int titleResId, int columns) {
+        Bundle bundle = new Bundle();
+        bundle.putInt(KEY_TITLE_ID, titleResId);
+        bundle.putInt(KEY_COLUMNS, columns);
+        setArguments(bundle);
+    }
     
     /**
      * Interface for a callback when a color square is selected.
@@ -129,6 +142,8 @@ public class ColorPickerDialogDash extends DialogFragment {
     	mSelectedColor= selectedColor;
     	if (titleResId>0)
     		mTitleResId=titleResId;
+    	
+    	setArguments(mTitleResId, mNumColumns);
     }
     
     
@@ -141,14 +156,27 @@ public class ColorPickerDialogDash extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        tryBindLists();
+        if (mColorChoices.length>0)
+        	tryBindLists();
     }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
         View rootView = layoutInflater.inflate(R.layout.dash_dialog_colors, null);
-
+        
+        if (getArguments() != null) {
+            mTitleResId = getArguments().getInt(KEY_TITLE_ID);
+            mNumColumns = getArguments().getInt(KEY_COLUMNS);
+        }
+        
+        if (savedInstanceState != null) {
+            mColorChoices = savedInstanceState.getIntArray(KEY_COLORS);
+            mSelectedColor = (Integer) savedInstanceState.getSerializable(KEY_SELECTED_COLOR);
+            tryBindLists();
+        }
+        
+        
         mColorGrid = (GridView) rootView.findViewById(R.id.color_grid);
         
         mColorGrid.setNumColumns(mNumColumns);
@@ -166,7 +194,7 @@ public class ColorPickerDialogDash extends DialogFragment {
         });
 
         tryBindLists();
-
+       
         return new AlertDialog.Builder(getActivity())
                 .setView(rootView)
                 .setTitle(mTitleResId) //Added
@@ -232,6 +260,13 @@ public class ColorPickerDialogDash extends DialogFragment {
         		notifyDataSetChanged();
         	}
         }
+    }
+    
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putIntArray(KEY_COLORS, mColorChoices);
+        outState.putSerializable(KEY_SELECTED_COLOR, mSelectedColor);
     }
 
 

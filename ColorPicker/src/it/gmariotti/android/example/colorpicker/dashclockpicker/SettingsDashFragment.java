@@ -13,43 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  *******************************************************************************/
-
 package it.gmariotti.android.example.colorpicker.dashclockpicker;
 
 import it.gmariotti.android.example.colorpicker.R;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.support.v4.app.NavUtils;
-import android.view.MenuItem;
+import android.preference.PreferenceFragment;
 
-/**
- *
- */
-public class SettingsActivity extends PreferenceActivity {
-
+public class SettingsDashFragment extends PreferenceFragment {
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
-		// In the simplified UI, fragments are not used at all and we instead
-        // use the older PreferenceActivity APIs.
-
-        // Add 'general' preferences.
-        //addPreferencesFromResource(R.xml.pref_dashcolor);
-		getFragmentManager().beginTransaction().replace(android.R.id.content,
-                new SettingsDashFragment()).commit();
+		addPreferencesFromResource(R.xml.pref_dashcolor);
 	}
-
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		}
-
-		return super.onOptionsItemSelected(item);
-	}
-
 }

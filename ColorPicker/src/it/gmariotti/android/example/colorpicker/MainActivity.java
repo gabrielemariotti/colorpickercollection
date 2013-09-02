@@ -65,11 +65,14 @@ public class MainActivity extends ListActivity {
 	private int mSelectedColorCal1 = 0;
 
 	// Keys for savedInstanceState
+	private final static String KEY_BUNDLE_POSITION = "KEY_BUNDLE_POSITION";
 	private final static String KEY_BUNDLE_SCD0 = "KEY_BUNDLE_SCD0";
 	private final static String KEY_BUNDLE_SCD1 = "KEY_BUNDLE_SCD1";
 	private final static String KEY_BUNDLE_SCC0 = "KEY_BUNDLE_SCC0";
 	private final static String KEY_BUNDLE_SCC1 = "KEY_BUNDLE_SCC1";
-
+	
+	int mLastPosition;
+	
 	// ---------------------------------------------------------------
 
 	@Override
@@ -81,6 +84,25 @@ public class MainActivity extends ListActivity {
 
 		// initialize menu
 		_initMenu();
+		
+		
+		//Re-bind listeners
+		if (savedInstanceState!=null){
+			
+			ColorPickerDialogDash colordash = (ColorPickerDialogDash)
+					getFragmentManager().findFragmentByTag("dash");
+	        if (colordash != null) {
+	            // re-bind listener to fragment
+	            colordash.setOnColorSelectedListener(colordashListner);
+	        }
+	        
+			ColorPickerDialog colorcalendar = (ColorPickerDialog) 
+					getFragmentManager().findFragmentByTag("cal");
+	        if (colorcalendar != null) {
+	            // re-bind listener to fragment
+	            colorcalendar.setOnColorSelectedListener(colorcalendarListener );
+	        }
+		}
 	}
 
 	@Override
@@ -103,6 +125,7 @@ public class MainActivity extends ListActivity {
 			mSelectedColorDash1 = savedInstanceState.getInt(KEY_BUNDLE_SCD1);
 			mSelectedColorCal0 = savedInstanceState.getInt(KEY_BUNDLE_SCC0);
 			mSelectedColorCal1 = savedInstanceState.getInt(KEY_BUNDLE_SCC1);
+			mLastPosition = savedInstanceState.getInt(KEY_BUNDLE_POSITION);
 		}
 	}
 	
@@ -115,12 +138,14 @@ public class MainActivity extends ListActivity {
 		outState.putInt(KEY_BUNDLE_SCD1, mSelectedColorDash1);
 		outState.putInt(KEY_BUNDLE_SCC0, mSelectedColorCal0);
 		outState.putInt(KEY_BUNDLE_SCC1, mSelectedColorCal1);
+		outState.putInt(KEY_BUNDLE_POSITION, mLastPosition);
 	}
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 
-		final NsMenuItemModel item = mAdapter.getItem(position);
+		NsMenuItemModel item = mAdapter.getItem(position);
+		mLastPosition = position;
 
 		if (item == null)
 			return;
@@ -143,17 +168,7 @@ public class MainActivity extends ListActivity {
 							mSelectedColorDash1, 5);
 
 			// Implement listener to get selected color value
-			colordashfragment
-					.setOnColorSelectedListener(new ColorPickerDialogDash.OnColorSelectedListener() {
-
-						@Override
-						public void onColorSelected(int color) {
-							mSelectedColorDash1 = color;
-							item.colorSquare = color;
-							mAdapter.notifyDataSetChanged();
-						}
-
-					});
+			colordashfragment.setOnColorSelectedListener(colordashListner);
 			colordashfragment.show(getFragmentManager(), "dash");
 			break;
 		// -------------------------------------------------------------------------------------------------------------
@@ -164,19 +179,8 @@ public class MainActivity extends ListActivity {
 					mSelectedColorCal0, 5,
 					Utils.isTablet(this) ? ColorPickerDialog.SIZE_LARGE
 							: ColorPickerDialog.SIZE_SMALL);
-
-			// Implement listener to get selected color value
-			colorcalendar
-					.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
-
-						@Override
-						public void onColorSelected(int color) {
-							mSelectedColorCal0 = color;
-							item.colorSquare = color;
-							mAdapter.notifyDataSetChanged();
-						}
-
-					});
+						
+			colorcalendar.setOnColorSelectedListener(colorcalendarListener);
 			colorcalendar.show(getFragmentManager(), "cal");
 			break;
 		// -------------------------------------------------------------------------------------------------------------
@@ -189,7 +193,39 @@ public class MainActivity extends ListActivity {
 		if (intent != null)
 			startActivity(intent);
 	}
+	
+	//-----------------------------------------------------------------------------------------------------------------
+	// Listeners
+	//-----------------------------------------------------------------------------------------------------------------
+	
+	ColorPickerDialogDash.OnColorSelectedListener colordashListner=new ColorPickerDialogDash.OnColorSelectedListener(){
 
+		@Override
+		public void onColorSelected(int color) {
+			mSelectedColorDash1 = color;
+			NsMenuItemModel item = mAdapter.getItem(mLastPosition);
+			if (item!=null)
+				item.colorSquare = color;
+			mAdapter.notifyDataSetChanged();
+		}
+
+	};
+
+	
+	// Implement listener to get selected color value
+	ColorPickerSwatch.OnColorSelectedListener colorcalendarListener = new ColorPickerSwatch.OnColorSelectedListener(){
+
+		@Override
+		public void onColorSelected(int color) {
+			mSelectedColorCal0 = color;
+			NsMenuItemModel item = mAdapter.getItem(mLastPosition);
+			if (item!=null)
+				item.colorSquare = color;
+			mAdapter.notifyDataSetChanged();
+		}
+	};
+
+				
 	/**
 	 * Build Menu List
 	 * 

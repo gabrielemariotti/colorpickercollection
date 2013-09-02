@@ -112,29 +112,32 @@ public class ColorPickerPreference extends Preference{
                 .add(colorcalendar, getFragmentTag())
                 .commit();
         
-        //Implement listener to get selected color value
-		colorcalendar.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener(){
-
-			@Override
-			public void onColorSelected(int color) {
-				setValue(color);				
-			}
-			
-		});
+       colorcalendar.setOnColorSelectedListener(listener);
     }
-    /*
+    
+    /**
+     * Implement listener to get selected color value
+     */
+    ColorPickerSwatch.OnColorSelectedListener listener = new ColorPickerSwatch.OnColorSelectedListener() {
+		
+		@Override
+		public void onColorSelected(int color) {
+			setValue(color);
+		}
+	};
+    
     @Override
     protected void onAttachedToActivity() {
         super.onAttachedToActivity();
 
         Activity activity = (Activity) getContext();
-        ColorPickerDialog fragment = (ColorPickerDialog) activity
+        ColorPickerDialog colorcalendar = (ColorPickerDialog) activity
                 .getFragmentManager().findFragmentByTag(getFragmentTag());
-        if (fragment != null) {
-            // re-bind preference to fragment
-            //fragment.setPreference(this);
+        if (colorcalendar != null) {
+            // re-bind listener to fragment
+            colorcalendar.setOnColorSelectedListener(listener);
         }
-    }*/
+    }
 
     @Override
     protected Object onGetDefaultValue(TypedArray a, int index) {

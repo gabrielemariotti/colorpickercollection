@@ -17,6 +17,7 @@
 package it.gmariotti.android.example.colorpicker.calendarstock;
 
 import it.gmariotti.android.example.colorpicker.R;
+import it.gmariotti.android.example.colorpicker.dashclockpicker.SettingsDashFragment;
 import android.os.Bundle;
 import android.preference.PreferenceActivity;
 import android.support.v4.app.NavUtils;
@@ -33,7 +34,9 @@ public class SettingsPickerActivity extends PreferenceActivity {
         // use the older PreferenceActivity APIs.
 
         // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_calendarcolor);
+        //addPreferencesFromResource(R.xml.pref_calendarcolor);
+		getFragmentManager().beginTransaction().replace(android.R.id.content,
+                new SettingsPickerFragment()).commit();
 	}
 
 	@Override
