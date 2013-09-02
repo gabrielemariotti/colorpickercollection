@@ -7,7 +7,7 @@ You can find source code in:
 
 ### Usage
 
-You can find an example of original `PreferenceColor` in `dashclockpicker.dashclockSettingsActivity`.
+You can find an example of original `ColorPreference` in `dashclockpicker.SettingsDashFragment`.
 
 ``` java
  Intent intent = new Intent(this, SettingsActivity.class);
@@ -16,13 +16,22 @@ You can find an example of original `PreferenceColor` in `dashclockpicker.dashcl
  
  public class SettingsActivity extends PreferenceActivity {
 
- 	 @Override
-	 protected void onCreate(Bundle savedInstanceState) {
+ 	@Override
+	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 		
-        // Add 'general' preferences.
-        addPreferencesFromResource(R.xml.pref_dashcolor);
+        getFragmentManager().beginTransaction().replace(android.R.id.content,
+                new SettingsDashFragment()).commit();
    }
+ }
+ 
+ public class SettingsDashFragment extends PreferenceFragment {
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		addPreferencesFromResource(R.xml.pref_dashcolor);
+	}
  }
 ```
 
