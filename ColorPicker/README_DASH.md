@@ -3,7 +3,7 @@
 You can find source code in:
 [Dashclock Color Picker source](https://code.google.com/p/dashclock/source/browse/main/src/main/java/com/google/android/apps/dashclock/configuration/ColorPreference.java)
 
-![DashPicker](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/dashDialog.png)
+![DashPicker](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/dash_prefs.png)
 
 ### Usage
 
@@ -83,7 +83,7 @@ You can find an example of Custom **ColorDialogPicker** in `MainActivity`:
 
 ```
 
-![DashPicker](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/dash_prefs.png)
+![DashPicker](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/dashDialog.png)
 
 You can find `Utils.ColorUtils` some useful methods to manage colors.
 
