@@ -83,6 +83,7 @@ You can find an example of custom `ColorPickerPreference` in `calendarstock.Sett
 
 </PreferenceScreen>
 ```
+![StockPicker](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/stock_prefs.png)
 
 ---
 
