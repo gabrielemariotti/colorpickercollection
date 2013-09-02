@@ -17,6 +17,7 @@ package it.gmariotti.android.example.colorpicker;
 
 import it.gmariotti.android.example.colorpicker.calendarstock.ColorPickerDialog;
 import it.gmariotti.android.example.colorpicker.calendarstock.ColorPickerSwatch;
+import it.gmariotti.android.example.colorpicker.calendarstock.SettingsPickerActivity;
 import it.gmariotti.android.example.colorpicker.dashclockpicker.ColorPickerDialogDash;
 import it.gmariotti.android.example.colorpicker.dashclockpicker.SettingsActivity;
 import it.gmariotti.android.example.colorpicker.internal.NsMenuAdapter;
@@ -26,134 +27,169 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
 /**
  * This activity contains these examples:
  * 
- * DialogColorPicker by StockCalendar
- * ColorPreference by DashClock
- * DialogColorPickerDash extracted from Dashclock 
+ * DialogColorPicker by StockCalendar ColorPreference by DashClock
+ * DialogColorPickerDash extracted from Dashclock ColorPickerPreference based on
+ * StockCalendar
  * 
  * 
  * @author Gabriele Mariotti (gabri.mariotti@gmail.com)
- *
+ * 
  */
-public class MainActivity extends ListActivity{
+public class MainActivity extends ListActivity {
 
-	//---------------------------------------------------------------
-	//Only for Menu
+	// ---------------------------------------------------------------
+	// Only for Menu
 	private NsMenuAdapter mAdapter;
-	
+
 	private String[] menuItems;
-	private static final int MENU_DASH_0=0;
-	private static final int MENU_DASH_1=1;
-	private static final int MENU_DASH_2=2;
-	private static final int MENU_CALENDAR_0=100;
-	//---------------------------------------------------------------
-	
-	//Selected colors
-	private int mSelectedColorDash0= 0;
-	private int mSelectedColorDash1= 0;
-	private int mSelectedColorCal0= 0;
-	
-	//Keys for savedInstanceState
-	private final static String KEY_BUNDLE_SCD0="KEY_BUNDLE_SCD0";
-	private final static String KEY_BUNDLE_SCD1="KEY_BUNDLE_SCD1";
-	private final static String KEY_BUNDLE_SCC0="KEY_BUNDLE_SCC0";
-	
-	//---------------------------------------------------------------
+	private static final int MENU_DASH_0 = 0;
+	private static final int MENU_DASH_1 = 1;
+	private static final int MENU_DASH_2 = 2;
+	private static final int MENU_CALENDAR_0 = 100;
+	private static final int MENU_CALENDAR_1 = 101;
+	// ---------------------------------------------------------------
+
+	// Selected colors
+	private int mSelectedColorDash0 = 0;
+	private int mSelectedColorDash1 = 0;
+	private int mSelectedColorCal0 = 0;
+	private int mSelectedColorCal1 = 0;
+
+	// Keys for savedInstanceState
+	private final static String KEY_BUNDLE_SCD0 = "KEY_BUNDLE_SCD0";
+	private final static String KEY_BUNDLE_SCD1 = "KEY_BUNDLE_SCD1";
+	private final static String KEY_BUNDLE_SCC0 = "KEY_BUNDLE_SCC0";
+	private final static String KEY_BUNDLE_SCC1 = "KEY_BUNDLE_SCC1";
+
+	// ---------------------------------------------------------------
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-	
+
 		// Get selected colors
-		if (savedInstanceState!=null){
-			mSelectedColorDash0=savedInstanceState.getInt(KEY_BUNDLE_SCD0);
-			mSelectedColorDash1=savedInstanceState.getInt(KEY_BUNDLE_SCD1);
-			mSelectedColorCal0=savedInstanceState.getInt(KEY_BUNDLE_SCC0);
-		}
-		
-		//initialize menu
+		restoreSelectedColor(savedInstanceState);
+
+		// initialize menu
+		_initMenu();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		_initMenu();
 	}
 	
+	@Override
+	protected void onRestoreInstanceState(Bundle state) {
+		super.onRestoreInstanceState(state);
+		// Get selected colors
+		restoreSelectedColor(state);
+	}
+	
+	private void restoreSelectedColor(Bundle savedInstanceState){
+		// Get selected colors
+		if (savedInstanceState != null) {
+			mSelectedColorDash0 = savedInstanceState.getInt(KEY_BUNDLE_SCD0);
+			mSelectedColorDash1 = savedInstanceState.getInt(KEY_BUNDLE_SCD1);
+			mSelectedColorCal0 = savedInstanceState.getInt(KEY_BUNDLE_SCC0);
+			mSelectedColorCal1 = savedInstanceState.getInt(KEY_BUNDLE_SCC1);
+		}
+	}
 	
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
 		super.onSaveInstanceState(outState);
-		
-		//Save selected color
+
+		// Save selected color
 		outState.putInt(KEY_BUNDLE_SCD0, mSelectedColorDash0);
 		outState.putInt(KEY_BUNDLE_SCD1, mSelectedColorDash1);
 		outState.putInt(KEY_BUNDLE_SCC0, mSelectedColorCal0);
+		outState.putInt(KEY_BUNDLE_SCC1, mSelectedColorCal1);
 	}
-	
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-		
+
 		final NsMenuItemModel item = mAdapter.getItem(position);
-		
-		if (item==null) return;
+
+		if (item == null)
+			return;
 		Intent intent = null;
-		//Init colors to use in dialogs
-		int[] mColor= Utils.ColorUtils.colorChoice(this);
-		
+		// Init colors to use in dialogs
+		int[] mColor = Utils.ColorUtils.colorChoice(this);
+
 		switch (item._id) {
 		default:
-		//-------------------------------------------------------------------------------------------------------------
+			// -------------------------------------------------------------------------------------------------------------
 		case MENU_DASH_0:
-			//Original ColorPreference
+			// Original ColorPreference
 			intent = new Intent(this, SettingsActivity.class);
 			break;
-		//-------------------------------------------------------------------------------------------------------------	
+		// -------------------------------------------------------------------------------------------------------------
 		case MENU_DASH_1:
-			//Custom Dialog extracted from ColorPreference
-			ColorPickerDialogDash colordashfragment = ColorPickerDialogDash.newInstance(R.string.color_picker_default_title,mColor,mSelectedColorDash1,5);
-			
-			//Implement listener to get selected color value
-			colordashfragment.setOnColorSelectedListener(new ColorPickerDialogDash.OnColorSelectedListener(){
+			// Custom Dialog extracted from ColorPreference
+			ColorPickerDialogDash colordashfragment = ColorPickerDialogDash
+					.newInstance(R.string.color_picker_default_title, mColor,
+							mSelectedColorDash1, 5);
 
-				@Override
-				public void onColorSelected(int color) {
-					mSelectedColorDash1=color;	
-					item.colorSquare=color;
-					mAdapter.notifyDataSetChanged();
-				}
-				
-			});
+			// Implement listener to get selected color value
+			colordashfragment
+					.setOnColorSelectedListener(new ColorPickerDialogDash.OnColorSelectedListener() {
+
+						@Override
+						public void onColorSelected(int color) {
+							mSelectedColorDash1 = color;
+							item.colorSquare = color;
+							mAdapter.notifyDataSetChanged();
+						}
+
+					});
 			colordashfragment.show(getFragmentManager(), "dash");
 			break;
-		//-------------------------------------------------------------------------------------------------------------
+		// -------------------------------------------------------------------------------------------------------------
 		case MENU_CALENDAR_0:
-			//Original Stock Calendar
-			ColorPickerDialog colorcalendar = ColorPickerDialog.newInstance(R.string.color_picker_default_title,
-																			mColor, mSelectedColorCal0, 5, Utils.isTablet(this)? ColorPickerDialog.SIZE_LARGE : ColorPickerDialog.SIZE_SMALL);
-			
-			//Implement listener to get selected color value
-			colorcalendar.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener(){
+			// Original Stock Calendar
+			ColorPickerDialog colorcalendar = ColorPickerDialog.newInstance(
+					R.string.color_picker_default_title, mColor,
+					mSelectedColorCal0, 5,
+					Utils.isTablet(this) ? ColorPickerDialog.SIZE_LARGE
+							: ColorPickerDialog.SIZE_SMALL);
 
-				@Override
-				public void onColorSelected(int color) {
-					mSelectedColorCal0=color;
-					item.colorSquare=color;
-					mAdapter.notifyDataSetChanged();
-				}
-				
-			});
-			colorcalendar.show(getFragmentManager(),"cal");
+			// Implement listener to get selected color value
+			colorcalendar
+					.setOnColorSelectedListener(new ColorPickerSwatch.OnColorSelectedListener() {
+
+						@Override
+						public void onColorSelected(int color) {
+							mSelectedColorCal0 = color;
+							item.colorSquare = color;
+							mAdapter.notifyDataSetChanged();
+						}
+
+					});
+			colorcalendar.show(getFragmentManager(), "cal");
 			break;
-		//-------------------------------------------------------------------------------------------------------------	
+		// -------------------------------------------------------------------------------------------------------------
+		case MENU_CALENDAR_1:
+			// ColorPreference with StockCalendar
+			intent = new Intent(this, SettingsPickerActivity.class);
+			break;
 		}
 
 		if (intent != null)
 			startActivity(intent);
 	}
-	
-	
+
 	/**
 	 * Build Menu List
 	 * 
@@ -161,36 +197,69 @@ public class MainActivity extends ListActivity{
 	private void _initMenu() {
 		mAdapter = new NsMenuAdapter(this);
 
-		//Read preferences to get selected Color
-		SharedPreferences shared = PreferenceManager.getDefaultSharedPreferences(this);
-		if (shared!=null){
-			mSelectedColorDash0= shared.getInt("dash_colorkey", 0);
+		// Read preferences to get selected Color
+		SharedPreferences shared = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		if (shared != null) {
+			mSelectedColorDash0 = shared.getInt("dash_colorkey", 0);
+			mSelectedColorCal1 = shared.getInt("calendar_colorkey", 0);
 		}
-		
-		//-------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------
 		// Dashclock
-		//-------------------------------------------------------------------------------------
+		// -------------------------------------------------------------------------------------
 
 		// Add Header
 		mAdapter.addHeader(R.string.ns_menu_main_header_dash);
 		// Add Dashclock items
-		NsMenuItemModel mItem1 = new NsMenuItemModel(R.string.ns_menu_main_row_dash_original, mSelectedColorDash0, MENU_DASH_0);
-		NsMenuItemModel mItem2 = new NsMenuItemModel(R.string.ns_menu_main_row_dash_dialog, mSelectedColorDash1, MENU_DASH_1);
+		NsMenuItemModel mItem1 = new NsMenuItemModel(
+				R.string.ns_menu_main_row_dash_original, mSelectedColorDash0,
+				MENU_DASH_0);
+		NsMenuItemModel mItem2 = new NsMenuItemModel(
+				R.string.ns_menu_main_row_dash_dialog, mSelectedColorDash1,
+				MENU_DASH_1);
 		mAdapter.addItem(mItem1);
 		mAdapter.addItem(mItem2);
-		
-		//-------------------------------------------------------------------------------------
+
+		// -------------------------------------------------------------------------------------
 		// Stock Calendar
-		//-------------------------------------------------------------------------------------
+		// -------------------------------------------------------------------------------------
 
 		// Add Header
 		mAdapter.addHeader(R.string.ns_menu_main_header_calendar);
-		NsMenuItemModel mItem1c = new NsMenuItemModel(R.string.ns_menu_main_row_calendar_original, mSelectedColorCal0, MENU_CALENDAR_0);
+		NsMenuItemModel mItem1c = new NsMenuItemModel(
+				R.string.ns_menu_main_row_calendar_original,
+				mSelectedColorCal0, MENU_CALENDAR_0);
+		NsMenuItemModel mItem2c = new NsMenuItemModel(
+				R.string.ns_menu_main_row_calendar_preference,
+				mSelectedColorCal1, MENU_CALENDAR_1);
 		mAdapter.addItem(mItem1c);
-		
-		
+		mAdapter.addItem(mItem2c);
+
 		setListAdapter(mAdapter);
 		getListView().setDividerHeight(0);
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main_menu, menu);
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+
+		// About
+		case R.id.menu_about:
+			Utils.showAbout(this);
+			return true;
+
+		}
+
+		// Handle your other action bar items...
+		return super.onOptionsItemSelected(item);
 	}
 
 }
