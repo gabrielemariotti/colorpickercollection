@@ -8,10 +8,25 @@
     <string name="pref_config">Color Picker</string>
     <string name="title_activity_settings">Setting</string>
     
+    <!-- Menu -->
+    <string name="colorpicker_menu_about">About</string>
+    
+    <!-- Menu MainActivity -->
     <string name="ns_menu_main_header_dash">Dashclock</string>
     <string name="ns_menu_main_row_dash_original">Original ColorPreference</string>
     <string name="ns_menu_main_row_dash_dialog">Custom ColorPickerDialog</string>
     <string name="ns_menu_main_header_calendar">Stock Calendar</string>
     <string name="ns_menu_main_row_calendar_original">Original ColorPicker</string>
+    <string name="ns_menu_main_row_calendar_preference">Custom ColorPreference</string>
     
+     <!-- About -->
+    <string name="title_about">About</string>
+    <string name="about_ok">OK</string>
+    <string name="about_body"><![CDATA[
+        <b>Colorpickercollection Library & Demo</b><br>
+        Version %s<br><br>
+        <a href="https://github.com/gabrielemariotti/colorpickercollection">Source</a><br><br>
+        <a href="https://plus.google.com/114432517923423045208">By Gabriele Mariotti</a><br><br>
+
+    ]]></string>
 </resources>
