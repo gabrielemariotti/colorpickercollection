@@ -21,7 +21,7 @@ You can find source code in :
 
 ### Usage
 
-You can find an example in `MainActivity`:
+You can find an example of `ColorPickerDialog` in `MainActivity`:
 It uses original code.
 ``` java
 
@@ -45,6 +45,26 @@ It uses original code.
   colorcalendar.show(getFragmentManager(),"cal");
 ```
 
+You can also find an example of custom `ColorPickerPreference` in `SettingsPickerFragment`
+``` xml
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <PreferenceCategory android:title="@string/pref_config" >
+        <it.gmariotti.android.example.colorpicker.calendarstock.ColorPickerPreference
+            android:defaultValue="@android:color/white"
+            android:key="calendar_colorkey"
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:summary="Preference summary"
+            android:title="Preference Title"
+            app:cal_itemLayout="@layout/calendar_grid_item_color"
+            app:cal_numColumns="5" />
+    </PreferenceCategory>
+
+</PreferenceScreen>
+```
+![StockPickerPref](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/stock_prefs.png)
 
 ---
 
@@ -80,7 +100,25 @@ You can find an example of Custom ColorDialogPicker in `MainActivity`:
 
 ```
 
-You can also find an example of original `PreferenceColor` in `dashclockpicker.dashclockSettingsActivity`.
+You can also find an example of original `ColorPreference` in `dashclockpicker.dashclockSettingsActivity`.
+``` xml
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+ 
+    <PreferenceCategory android:title="@string/pref_config" >
+         <it.gmariotti.android.example.colorpicker.dashclockpicker.ColorPreference
+            android:key="dash_colorkey"
+            android:title="Preference Title"
+            android:summary="Preference summary"
+            android:defaultValue="@android:color/white"
+        	android:negativeButtonText="@null"
+        	android:positiveButtonText="@null"
+        	app:numColumns="5"
+        	app:itemLayout="@layout/dash_grid_item_color"
+        	 />
+    </PreferenceCategory>
+</PreferenceScreen>
+```
 
 ![DashPicker](https://github.com/gabrielemariotti/colorpickercollection/raw/master/ColorPicker/images/dash_prefs.png)
 
